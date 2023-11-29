@@ -3,7 +3,6 @@
 window.onload = () => {
     let searchProductDrop = document.getElementById('searchProductDrop');
 
-    // Use a function reference without calling it
     searchProductDrop.onchange = function () {
         groceryDropdown(searchProductDrop);
     };
@@ -18,6 +17,4 @@ function groceryDropdown(searchProductDrop) {
     } else {
         categoryDrop.style.display = 'none';
     }
-
-    // Add more logic or fetch data based on other selected options
 }
