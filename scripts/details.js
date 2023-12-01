@@ -17,17 +17,17 @@ function fetchProductApi(productId){
         .catch(error => console.error(`Not fetching`, error));
 }
 
-function displayProduct(productData){
-    const productDetails = document.getElementById("productDetails")
+// function displayProduct(productData){
+//     const productDetails = document.getElementById("productDetails")
     
-    productData.forEach(product => {
-    productDetails.innerHTML = `
-    <div>
-    <h4>${product.productName}</h4>
-    </div>
-    `
+//     productData.forEach(product => {
+//     productDetails.innerHTML = `
+//     <div>
+//     <h4>${product.productName}</h4>
+//     </div>
+//     `
 
-    })
+//     })
    
-}
+// }
 

@@ -41,6 +41,8 @@ async function groceryDropdown(searchProductDrop, categoryDrop) {
     } catch (error) {
         console.error('Error fetching data:', error);
     }
+
+
 }
 
 function displayCategory() {
@@ -60,7 +62,7 @@ function displayCategory() {
     };
 }
 
-async function viewAllProducts(searchProductDrop) {
+async function viewAllProducts() {
     try {
         const response = await fetch('http://localhost:8081/api/products');
         const data = await response.json();
