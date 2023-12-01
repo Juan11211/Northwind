@@ -5,21 +5,23 @@ let categoryDrop = document.getElementById('categoryDrop');
 let displayCategories = document.getElementById('displayCategories');
 
 window.onload = () => {
-    searchProductDrop.onchange = function () {
-        const selectedValue = searchProductDrop.value;
-
-        if (selectedValue === 'selectCategory') {
-            groceryDropdown(searchProductDrop, categoryDrop);
-        } else if (selectedValue === 'viewAll') {
-            viewAllProducts(searchProductDrop);
-            categoryDrop.style.display = "none";
-        }
-    };
+    searchProductDrop.onchange = handleSearchProductChange;
 
     categoryDrop.style.display = "none";
 }
 
-async function groceryDropdown(searchProductDrop, categoryDrop) {
+function handleSearchProductChange(){
+        const selectedValue = searchProductDrop.value;
+
+        if (selectedValue === 'selectCategory') {
+            handleGroceryDropDown(searchProductDrop, categoryDrop);
+        } else if (selectedValue === 'viewAll') {
+            viewAllProducts(searchProductDrop);
+            categoryDrop.style.display = "none";
+        }
+};
+
+async function handleGroceryDropDown(searchProductDrop, categoryDrop) {
     let searchProductMenu = searchProductDrop.value;
 
     categoryDrop.style.display = (searchProductMenu === 'selectCategory') ? 'block' : 'none';
@@ -27,7 +29,7 @@ async function groceryDropdown(searchProductDrop, categoryDrop) {
     try {
         const response = await fetch('http://localhost:8081/api/categories');
         const data = await response.json();
-        displayCategory(data);
+        displayCategoryDropDown(data);
 
         let defaultOption = new Option('Select One');
         categoryDrop.appendChild(defaultOption);
@@ -45,7 +47,7 @@ async function groceryDropdown(searchProductDrop, categoryDrop) {
 
 }
 
-function displayCategory() {
+function displayCategoryDropDown() {
 
     categoryDrop.onchange = async () => {
         const selectedCategoryId = categoryDrop.value;
