@@ -6,8 +6,14 @@ let displayCategories = document.getElementById('displayCategories');
 
 window.onload = () => {
     searchProductDrop.onchange = function () {
-        groceryDropdown(searchProductDrop, categoryDrop);
-        viewAllProducts(searchProductDrop);
+        const selectedValue = searchProductDrop.value;
+
+        if (selectedValue === 'selectCategory') {
+            groceryDropdown(searchProductDrop, categoryDrop);
+        } else if (selectedValue === 'viewAll') {
+            viewAllProducts(searchProductDrop);
+            categoryDrop.style.display = "none";
+        }
     };
 
     categoryDrop.style.display = "none";
@@ -18,30 +24,26 @@ async function groceryDropdown(searchProductDrop, categoryDrop) {
 
     categoryDrop.style.display = (searchProductMenu === 'selectCategory') ? 'block' : 'none';
 
-    if (searchProductMenu === 'selectCategory') {
-        try {
-            const response = await fetch('http://localhost:8081/api/categories');
-            const data = await response.json();
-            displayCategory(data);
+    try {
+        const response = await fetch('http://localhost:8081/api/categories');
+        const data = await response.json();
+        displayCategory(data);
 
-            let defaultOption = new Option('Select One');
-            categoryDrop.appendChild(defaultOption);
+        let defaultOption = new Option('Select One');
+        categoryDrop.appendChild(defaultOption);
 
-            for (const item of data) {
-                const option = document.createElement('option');
-                option.value = item.categoryId;
-                option.textContent = item.name;
-                categoryDrop.appendChild(option);
-            }
-
-        } catch (error) {
-            console.error('Error fetching data:', error);
+        for (const item of data) {
+            const option = document.createElement('option');
+            option.value = item.categoryId;
+            option.textContent = item.name;
+            categoryDrop.appendChild(option);
         }
+    } catch (error) {
+        console.error('Error fetching data:', error);
     }
 }
 
 function displayCategory() {
-    console.log('Data passed to displayCategory:');
 
     categoryDrop.onchange = async () => {
         const selectedCategoryId = categoryDrop.value;
@@ -59,15 +61,12 @@ function displayCategory() {
 }
 
 async function viewAllProducts(searchProductDrop) {
-    let viewAllMenu = searchProductDrop.value;
-    if (viewAllMenu === 'viewAll') {
-        try {
-            const response = await fetch('http://localhost:8081/api/products');
-            const data = await response.json();
-            displayAllProducts(data);
-        } catch (error) {
-            console.error('Error fetching all products data:', error);
-        }
+    try {
+        const response = await fetch('http://localhost:8081/api/products');
+        const data = await response.json();
+        displayAllProducts(data);
+    } catch (error) {
+        console.error('Error fetching all products data:', error);
     }
 }
 
@@ -76,12 +75,25 @@ function displayCategoriesItem(productData) {
         <div class="card">
             <div class="card-body">
                 <h4>${product.productName}</h4>
-                <!-- Add other properties you want to display -->
+                <p>${Number(product.unitPrice).toFixed(2)}</p> 
+                <p>${product.unitsInStock}</p>
+                <p>${product.supplier}</p>
             </div>
         </div>
     `);
 }
 
-function displayAllProducts(data){
-    
+
+function displayAllProducts(data) {
+    displayCategories.innerHTML = data.map(item => `
+        <div class="card">
+            <div class="card-body">
+                <h4>${item.productName}</h4>
+                <p>${Number(item.unitPrice).toFixed(2)}</p> 
+                <p><a href="details.html?id=${item.productId}">View Details</a></p>
+            </div>
+        </div>
+    `);
 }
+
+
