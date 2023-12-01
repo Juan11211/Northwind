@@ -99,3 +99,4 @@ function displayAllProducts(data) {
 }
 
 
+// work on refactoring variable - function names
