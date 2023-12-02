@@ -68,10 +68,16 @@ async function viewAllProducts() {
     try {
         const response = await fetch('http://localhost:8081/api/products');
         const data = await response.json();
-        displayAllProducts(data);
+        const sortedData = sortViewAllProductsByName(data);
+        displayAllProducts(sortedData);
+
     } catch (error) {
         console.error('Error fetching all products data:', error);
     }
+}
+
+function sortViewAllProductsByName(data) {
+    return data.sort((a, b) => a.productName.toLowerCase().localeCompare(b.productName.toLowerCase()));
 }
 
 function displayCategoriesItem(productData) {
@@ -87,7 +93,6 @@ function displayCategoriesItem(productData) {
     `);
 }
 
-
 function displayAllProducts(data) {
     displayCategories.innerHTML = data.map(item => `
         <div class="card">
@@ -99,6 +104,3 @@ function displayAllProducts(data) {
         </div>
     `);
 }
-
-
-// work on refactoring variable - function names
